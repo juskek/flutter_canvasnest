@@ -1,7 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'canvas_nest.dart';
-import 'dart:math';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+const githubURL = 'https://github.com/juskek/flutter_canvasnest';
+const portfolioURL = 'https://justinkek.com/';
+
+void launchURL(_url) async {
+  await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
+}
 
 void main() {
   runApp(CanvasNestApp());
@@ -14,7 +22,7 @@ class CanvasNestApp extends StatelessWidget {
     return MaterialApp(
       title: 'Canvas Nest',
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+        primaryColor: Colors.white,
       ),
       home: MyHomePage(title: 'Canvas Nest'),
     );
@@ -57,6 +65,20 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: () => launchURL(githubURL),
+            icon: SvgPicture.network(
+                'https://raw.githubusercontent.com/gilbarbara/logos/f4c8e8b933aa80ce83b6d6d387e016bf4cb4e376/logos/github-icon.svg'),
+            splashRadius: kToolbarHeight * 0.4,
+          ),
+          IconButton(
+            icon: SvgPicture.network(
+                'https://raw.githubusercontent.com/juskek/web_portfolio/3971af96ed96c1a175360ff0b57753090b01fc67/assets/JK_sb.svg'),
+            onPressed: () => launchURL(portfolioURL),
+            splashRadius: kToolbarHeight * 0.4,
+          ),
+        ],
       ),
       body: CanvasNestTransition(
           _controller, nestConfig, nodeInfoList, screenSize),

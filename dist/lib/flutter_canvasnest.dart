@@ -1,3 +1,5 @@
+library flutter_canvasnest; // TODO: what does this do
+
 import 'package:flutter/gestures.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';

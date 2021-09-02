@@ -12,11 +12,11 @@ class CanvasNestApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Canvas Nest',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blueGrey,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Canvas Nest'),
     );
   }
 }
@@ -32,29 +32,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   ScreenSize screenSize = ScreenSize(0, 0); // init screen size
-
-  // bool _cursorHovering = false;
-
-  final Random rng = Random();
-  final CanvasNestConfig nestConfig = CanvasNestConfig(
-      100, 1, Colors.grey.withAlpha(200), Colors.grey.withAlpha(200), 120);
-
-  List<NodeInfo> generateNodeInfo(BuildContext context) {
-    screenSize = ScreenSize(MediaQuery.of(context).size.width,
-        MediaQuery.of(context).size.height - kToolbarHeight);
-    print("Screen width:");
-    print(screenSize.width);
-    print("Screen height (minus appbar):");
-    print(screenSize.height);
-
-    return List<NodeInfo>.generate(
-        nestConfig.nodeCount,
-        (index) => NodeInfo(
-            rng.nextDouble() * screenSize.width,
-            rng.nextDouble() * screenSize.height,
-            rng.nextDouble() * 2 - 1,
-            rng.nextDouble() * 2 - 1));
-  }
+  final CanvasNestConfig nestConfig = CanvasNestConfig(100, 1,
+      Colors.grey.withAlpha(200), Colors.grey.withAlpha(200), 120, 0.02);
 
   late final AnimationController _controller = AnimationController(
     duration: Duration(seconds: 30), // ANITIME
@@ -70,20 +49,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    screenSize = ScreenSize(MediaQuery.of(context).size.width,
+        MediaQuery.of(context).size.height - kToolbarHeight);
     // generate node info
-    List<NodeInfo> nodeInfoList = generateNodeInfo(context);
+    List<NodeInfo> nodeInfoList =
+        generateNodeInfo(context, nestConfig, screenSize);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        // color: Colors.grey,
-        child: Stack(children: [
-          CanvasNestTransition(
-              _controller, nestConfig, nodeInfoList, screenSize),
-        ]),
-      ),
+      body: CanvasNestTransition(
+          _controller, nestConfig, nodeInfoList, screenSize),
     );
   }
 }

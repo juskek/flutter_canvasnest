@@ -4,4 +4,12 @@
 
 ## 0.0.1+1
 
-* Refactoring and updating of README.md
+* Refactored and initialised README.md
+
+## 0.0.1+2
+
+* Updated README.md
+
+## 0.0.2+1
+
+* Added support for mobile web browsers

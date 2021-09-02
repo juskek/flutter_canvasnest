@@ -58,7 +58,7 @@ class CanvasNestTransition extends AnimatedWidget {
   ScreenSize screenSize;
   PointerEvent? _details;
   CursorInfo _cursor = CursorInfo(0, 0, false);
-  PointerExitEvent _pointerExitEvent = PointerExitEvent();
+  // PointerExitEvent _pointerExitEvent = PointerExitEvent();
   void _pointerLocation(PointerEvent details) {
     _cursor.x = details.position.dx;
     _cursor.y = details.position.dy - kToolbarHeight;
@@ -76,6 +76,20 @@ class CanvasNestTransition extends AnimatedWidget {
       constraints: BoxConstraints.expand(),
       child: Listener(
         onPointerHover: _pointerLocation,
+        onPointerDown: (PointerDownEvent details) {
+          _cursor.hovering = true;
+          print(_cursor.hovering);
+          _pointerLocation(details);
+          print(details);
+        },
+        onPointerMove: _pointerLocation,
+        onPointerUp: (PointerUpEvent details) {
+          _cursor.hovering = false;
+          print(_cursor.hovering);
+          print(details);
+
+          // _pointerLocation(details);
+        },
         child: Stack(children: [
           Container(
             constraints: BoxConstraints.expand(),
